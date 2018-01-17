@@ -118,7 +118,7 @@ class Wordroid_Admin {
 				array( $this, 'page_dashboard' )
 		);
 		
-		add_submenu_page('wordroid-home',
+		/*add_submenu_page('wordroid-home',
 			__( 'Config', 'textdomain' ),
         	__( 'Config', 'textdomain' ),
 				'manage_options',
@@ -132,7 +132,7 @@ class Wordroid_Admin {
 				'manage_options',
 				'wordroid-settings',
 				array( $this, 'page_settings' )
-		);
+		);*/
 	}
 
 	public function page_dashboard() {

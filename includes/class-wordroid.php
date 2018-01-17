@@ -122,6 +122,8 @@ class Wordroid {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordroid-public.php';
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-init-custom-fields.php';
+
 		$this->loader = new Wordroid_Loader();
 
 	}
@@ -153,32 +155,13 @@ class Wordroid {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Wordroid_Admin( $this->get_plugin_name(), $this->get_version() );
+		$custom_fields = new Init_Custom_Fields( $this->get_plugin_name(), $this->get_version() );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'wordroid_admin_menu');
 		$this->loader->add_filter( 'rest_allow_anonymous_comments', $plugin_admin, '__return_true' );
-		//$this->loader->add_action( 'admin_init', $plugin_admin, 'wordroid_add_settings');
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-		
-	}
-
-
-	public function some_function() {
-		register_rest_route( 'myplugin/v1', '/author/(?P<id>\d+)', array(
-			'methods' => 'GET',
-			'callback' => 'my_awesome_func',
-		) );
-	}
-
-	function my_awesome_func( $data ) {
-		$posts = get_posts( array(
-		  'author' => $data['id'],
-		) );
-	   
-		if ( empty( $posts ) ) {
-		  return null;
-		}
-	   
-		return $posts[0]->post_title;
+		$this->loader->add_action( 'cmb2_init', $custom_fields, 'categories_custom_fields' );
+		$this->loader->add_action( 'cmb2_init', $custom_fields, 'admin_option_menu_fields');
 	}
 
 	/**
@@ -194,11 +177,8 @@ class Wordroid {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-	
 	}
-
-
-
+	
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.
 	 *
