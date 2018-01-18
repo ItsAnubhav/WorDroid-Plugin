@@ -157,7 +157,6 @@ class Wordroid {
 		$plugin_admin = new Wordroid_Admin( $this->get_plugin_name(), $this->get_version() );
 		$custom_fields = new Init_Custom_Fields( $this->get_plugin_name(), $this->get_version() );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'wordroid_admin_menu');
-		$this->loader->add_filter( 'rest_allow_anonymous_comments', $plugin_admin, '__return_true' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'cmb2_init', $custom_fields, 'categories_custom_fields' );
