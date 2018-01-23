@@ -21,7 +21,10 @@ function get_settings_data(){
 	    'force_update' => myprefix_get_option('force_update'),
 	    'toolbar_color' => myprefix_get_option('app_color'),
 	    'sections' => myprefix_get_option('wordroid_section_group'),
+<<<<<<< HEAD
 		'categories' => myprefix_get_option('home_screen_categories'),
+=======
+>>>>>>> ffbb52be04948bdec9254ce409a6495afe0ec861
 	);
 	return $settings_data;
 }

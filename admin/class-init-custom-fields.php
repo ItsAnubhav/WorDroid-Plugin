@@ -137,6 +137,7 @@ class Init_Custom_Fields{
 		'id'   => 'title',
 		'type' => 'text_small',
 	) );
+<<<<<<< HEAD
 	$cmb->add_group_field($group_field_id, array(
 		'name'    => 'Category Id',
 		'desc'    => 'The category to show lastest posts from',
@@ -177,6 +178,16 @@ class Init_Custom_Fields{
 			'9' => __( '9', 'cmb3' ),
 			'10' => __( '10', 'cmb3' ),
 		),
+=======
+
+	$cmb->add_group_field($group_field_id, array(
+		'name'           => 'Select Category',
+		'desc'           => 'Select the category for the section',
+		'id'             => 'category_slug',
+		'taxonomy'       => 'category', //Enter Taxonomy Slug
+		'type'           => 'taxonomy_select',
+		'remove_default' => 'true' // Removes the default metabox provided by WP core. Pending release as of Aug-10-16
+>>>>>>> ffbb52be04948bdec9254ce409a6495afe0ec861
 	) );
 	$cmb->add_group_field( $group_field_id, array(
 		'name' => 'Small Icon',
