@@ -126,12 +126,13 @@ class Init_Custom_Fields{
 		'type' => 'text_small',
 	) );
 
-	$cmb->add_group_field( $group_field_id, array(
-		'name' => 'Category ID',
-		'desc' => 'Leave empty to show latest post from site',
-		'id'   => 'category_id',
-		'type' => 'text_small',
-		'sanitization_cb' => 'sanitize_greater_than_100',
+	$cmb->add_group_field($group_field_id, array(
+		'name'           => 'Select Category',
+		'desc'           => 'Select the category for the section',
+		'id'             => 'category_slug',
+		'taxonomy'       => 'category', //Enter Taxonomy Slug
+		'type'           => 'taxonomy_select',
+		'remove_default' => 'true' // Removes the default metabox provided by WP core. Pending release as of Aug-10-16
 	) );
 
 	$cmb->add_group_field( $group_field_id, array(
