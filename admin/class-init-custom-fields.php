@@ -105,7 +105,7 @@ class Init_Custom_Fields{
 	) );
 
 	$group_field_id = $cmb->add_field( array(
-		'id'          => 'wiki_test_repeat_group',
+		'id'          => 'wordroid_section_group',
 		'type'        => 'group',
 		'description' => __( 'Your sections on app homepage', 'cmb2' ),
 		// 'repeatable'  => false, // use false if you want non-repeatable group
