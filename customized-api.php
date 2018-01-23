@@ -20,7 +20,7 @@ function get_settings_data(){
 	    'app_version' => myprefix_get_option('version'),
 	    'force_update' => myprefix_get_option('force_update'),
 	    'toolbar_color' => myprefix_get_option('app_color'),
-	    'sections' => myprefix_get_option('wiki_test_repeat_group'),
+	    'sections' => myprefix_get_option('wordroid_section_group'),
 	);
 	return $settings_data;
 }
