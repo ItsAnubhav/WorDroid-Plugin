@@ -103,9 +103,21 @@ class Init_Custom_Fields{
 		'type'    => 'colorpicker',
 		'default' => '#0084DA',
 	) );
-
+	$cmb->add_field( array(
+		'name'           => 'Categories',
+		'desc'           => 'Selected categories will be visible on home screen',
+		'id'             => 'home_screen_categories',
+		'taxonomy'       => 'category', //Enter Taxonomy Slug
+		'type'           => 'taxonomy_multicheck_inline',
+		'classes_cb'     => 'cmb-type-taxonomy-multicheck-inline',
+		// Optional :
+		'text'           => array(
+			'no_terms_text' => 'Sorry, no terms could be found.' // Change default text. Default: "No terms"
+		),
+		'remove_default' => 'true' // Removes the default metabox provided by WP core. Pending release as of Aug-10-16
+	) );
 	$group_field_id = $cmb->add_field( array(
-		'id'          => 'wiki_test_repeat_group',
+		'id'          => 'wordroid_section_group',
 		'type'        => 'group',
 		'description' => __( 'Your sections on app homepage', 'cmb2' ),
 		// 'repeatable'  => false, // use false if you want non-repeatable group
@@ -125,15 +137,47 @@ class Init_Custom_Fields{
 		'id'   => 'title',
 		'type' => 'text_small',
 	) );
-
-	$cmb->add_group_field( $group_field_id, array(
-		'name' => 'Category ID',
-		'desc' => 'Leave empty to show latest post from site',
-		'id'   => 'category_id',
-		'type' => 'text_small',
-		'sanitization_cb' => 'sanitize_greater_than_100',
+	$cmb->add_group_field($group_field_id, array(
+		'name'    => 'Category Id',
+		'desc'    => 'The category to show lastest posts from',
+		'id'      => 'category_id',
+		'type'    => 'text_small',
 	) );
-
+	$cmb->add_group_field($group_field_id, array(
+		'name'             => 'Section Type',
+		'desc'             => 'Select the layout type of the sections',
+		'id'               => 'type',
+		'type'             => 'select',
+		'show_option_none' => true,
+		'default'          => '1',
+		'options'          => array(
+			'1' => __( '1', 'cmb2' ),
+			'2' => __( '2', 'cmb2' ),
+			'3' => __( '3', 'cmb2' ),
+			'4' => __( '4', 'cmb2' ),
+			'5' => __( '5', 'cmb2' ),
+		),
+	) );
+	$cmb->add_group_field($group_field_id, array(
+		'name'             => 'Posts Count',
+		'desc'             => 'No of posts to show in the section',
+		'id'               => 'post_count',
+		'type'             => 'select',
+		'show_option_none' => true,
+		'default'          => '4',
+		'options'          => array(
+			'1' => __( '1', 'cmb3' ),
+			'2' => __( '2', 'cmb3' ),
+			'3' => __( '3', 'cmb3' ),
+			'4' => __( '4', 'cmb3' ),
+			'5' => __( '5', 'cmb3' ),
+			'6' => __( '6', 'cmb3' ),
+			'7' => __( '7', 'cmb3' ),
+			'8' => __( '8', 'cmb3' ),
+			'9' => __( '9', 'cmb3' ),
+			'10' => __( '10', 'cmb3' ),
+		),
+	) );
 	$cmb->add_group_field( $group_field_id, array(
 		'name' => 'Small Icon',
 		'desc' => 'Small icon',

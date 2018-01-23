@@ -46,7 +46,7 @@ abstract class CMB2_Type_Taxonomy_Base extends CMB2_Type_Multi_Base {
 		$terms = (array) $this->field->value;
 
 		foreach ( $terms as $index => $term ) {
-			$terms[ $index ] = get_term_by( 'slug', $term, $this->field->args( 'taxonomy' ) );
+			$terms[ $index ] = get_term_by( 'term_id', $term, $this->field->args( 'taxonomy' ) );
 		}
 
 		return $terms;
