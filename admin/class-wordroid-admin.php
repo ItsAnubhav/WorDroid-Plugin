@@ -111,8 +111,8 @@ class Wordroid_Admin {
 		);
 
 		add_submenu_page('wordroid-home',
-			__( 'Notifications', 'notifications' ),
-			__( 'Notifications', 'notifications' ),
+			__( 'Send Notifications', 'notifications' ),
+			__( 'Send Notifications', 'notifications' ),
 				'manage_options',
 				'wordroid-home',
 				array( $this, 'page_dashboard' )

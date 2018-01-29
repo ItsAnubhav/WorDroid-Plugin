@@ -56,12 +56,95 @@ class Init_Custom_Fields{
 			),
 			'preview_size' => 'medium', // Image size to use when previewing in the admin.
 		) );
-
 		// Add other metaboxes as needed
 	}
 
-	public function admin_send_notification_page(){
-		
+	public function admin_settings_page(){
+		$prefix = '_wordroid_settings';
+
+		$cmb = new_cmb2_box( array(
+			'id'           => $prefix . 'wp-wordroid',
+			'title'        => __( 'Settings', 'settings' ),
+			'object_types'  => array( 'options-page' ),
+			'option_key'      => 'wordroid-settings', // The option key and admin menu page slug.
+			'parent_slug'     => 'wordroid-home', // Make options page a submenu item of
+			'context'      => 'normal',
+			'priority'     => 'default',
+		) );
+		$cmb->add_field( array(
+			'name' => __( 'OneSingnal APP ID', 'settings' ),
+			'id' => 'os_app_id',
+			'type' => 'text',
+		) );
+		$cmb->add_field( array(
+			'name' => __( 'OneSingnal REST API Key', 'settings' ),
+			'id' => 'os_api_key',
+			'type' => 'text',
+		) );
+		$cmb->add_field( array(
+			'name' => 'New Post Notification',
+			'desc' => 'Send Notification automatically when a new post is published',
+			'id'   => 'enable_newpost_notify',
+			'type' => 'checkbox',
+		) );
+		$cmb->add_field( array(
+			'name' => __( 'New Post Notification\'s Title', 'settings' ),
+			'default' => 'New Post',
+			'id' => 'new_notify_title',
+			'type' => 'text',
+		) );
+		$cmb->add_field( array(
+			'name' => 'Updated Post Notification',
+			'desc' => 'Send Notification automatically when a post is updated',
+			'id'   => 'enable_updatepost_notify',
+			'type' => 'checkbox',
+		) );
+		$cmb->add_field( array(
+			'name' => __( 'Updated Post Notification\'s Title', 'settings' ),
+			'default' => 'Post Updated',
+			'id' => 'update_notify_title',
+			'type' => 'text',
+		) );
+	}
+
+	public function admin_update_page(){
+		$prefix = '_wordroid_update';
+
+		$cmb = new_cmb2_box( array(
+			'id'           => $prefix . 'wp-wordroid',
+			'title'        => __( 'Update App', 'update' ),
+			'object_types'  => array( 'options-page' ),
+			'option_key'      => 'wordroid-update', // The option key and admin menu page slug.
+			'parent_slug'     => 'wordroid-home', // Make options page a submenu item of
+			'show_in_rest' => WP_REST_Server::READABLE,
+			'context'      => 'normal',
+			'priority'     => 'default',
+		) );
+		$cmb->add_field( array(
+			'name' => __( 'Update Message Title', 'config' ),
+			'id' => 'update_title',
+			'default' => 'New Update',
+			'desc' => 'Max 50 characters',
+			'type' => 'text',
+		) );
+		$cmb->add_field( array(
+		    'name' => 'Update Message Body',
+		    'desc' => 'What\'s new in this update ',
+		    'id' => 'update_body',
+		    'type' => 'textarea_small'
+		) );
+		$cmb->add_field( array(
+			'name' => __( 'Version', 'config' ),
+			'id' => 'version',
+			'type'    => 'text_small',
+		) );
+
+		$cmb->add_field( array(
+			'name' => 'Force Update',
+			'desc' => 'Force users to update the app',
+			'id'   => 'force_update',
+			'type' => 'checkbox',
+		) );
 	}
 
 
@@ -85,23 +168,15 @@ class Init_Custom_Fields{
 		'type' => 'text',
 	) );
 	$cmb->add_field( array(
-		'name' => __( 'Version', 'config' ),
-		'id' => 'version',
-		'type'    => 'text_small',
-	) );
-
-	$cmb->add_field( array(
-		'name' => 'Force Update',
-		'desc' => 'Force users to update the app',
-		'id'   => 'force_update',
+		'name' => 'Enable Slider',
+		'desc' => 'Enable Slider on home screen',
+		'id'   => 'slider_enabled',
 		'type' => 'checkbox',
 	) );
-
 	$cmb->add_field( array(
-		'name'    => 'Toolbar Color',
-		'id'      => 'app_color',
-		'type'    => 'colorpicker',
-		'default' => '#0084DA',
+		'name' => __( 'Slider Category ID', 'config' ),
+		'id' => 'slider_category',
+		'type'    => 'text_small',
 	) );
 	$cmb->add_field( array(
 		'name'           => 'Categories',

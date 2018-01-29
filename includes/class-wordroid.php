@@ -161,6 +161,9 @@ class Wordroid {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'cmb2_init', $custom_fields, 'categories_custom_fields' );
 		$this->loader->add_action( 'cmb2_init', $custom_fields, 'admin_option_menu_fields');
+		$this->loader->add_action( 'cmb2_init', $custom_fields, 'admin_update_page');
+		$this->loader->add_action( 'cmb2_init', $custom_fields, 'admin_settings_page');
+		
 	}
 
 	/**

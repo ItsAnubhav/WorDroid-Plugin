@@ -21,19 +21,24 @@
 		//Post Notifications
 		if($selection=='post'){
 			$post_title		= $_POST['post_title'];
+			$post_content = $_POST['post_content'];
 			$post_id 	= $_POST['post_id'];
 			$post_img	= $_POST['post_img'];
-			send_post_notification($post_title);
+			post_notification($post_title,$post_content,$post_id,$post_img,'post');
+			//send_post_notification($post_title);
 		}else if($selection=='web'){
 			//Web Notification
 			$web_title 	= $_POST['web_title'];
+			$web_content = $_POST['web_content'];
 			$web_url	= $_POST['web_url'];
 			$web_img    = $_POST['web_img'];
+			post_notification($web_title,$web_content,$web_url,$web_img,'web');
 		}else if($selection=='message'){
 			//fcm_notif_submit($title, $content, $target, $s_regid);
 			//Message Notification
 			$msg_title = $_POST['msg_title'];
 			$msg_content = $_POST['msg_content'];
+			post_notification($msg_title,$msg_content,null,$web_img,'message');
 		}
 	}
 
@@ -68,6 +73,10 @@
 					<td><input style="width:300px;" type="text" name="post_title" value="<?php echo $post_title; ?>"></td>
 				</tr>
 				<tr>
+					<td style="width: 250px;" align="left"><b>Post Body</b></td>
+					<td><textarea style="width:300px;" id="post_content" name="post_content" type="text"><?php echo $post_content; ?></textarea></td>
+				</tr>
+				<tr>
 					<td style="width:250px;" align="left"><b>Post ID</b></td>
 					<td><input style="width:100px;" type="text" name="post_id" value="<?php echo $post_id; ?>"></td>
 				</tr>
@@ -80,6 +89,10 @@
 				<tr>
 					<td style="width:250px;" align="left"><b>Notification Title</b></td>
 					<td><input style="width:300px;" type="text" name="web_title" value="<?php echo $web_title; ?>"></td>
+				</tr>
+				<tr>
+					<td style="width: 250px;" align="left"><b>Notification Body</b></td>
+					<td><textarea style="width:300px;" id="web_content" name="web_content" type="text" ><?php echo $web_content; ?></textarea></td>
 				</tr>
 				<tr>
 					<td style="width:250px;" align="left"><b>Web URL</b></td>
@@ -105,7 +118,6 @@
 	</form>
 		</div>
 	</div>
-	
 </div>
 <script type="text/javascript">
 	function set_notify_type(){

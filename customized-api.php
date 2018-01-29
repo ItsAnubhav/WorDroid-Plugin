@@ -14,18 +14,60 @@ function register_settings_route(){
     'callback' => 'get_settings_data',
   ) );
 }
-
-
 function get_settings_data(){
+	//Update Title and Body
+	$update_title = substr(wordroid_get_option('wordroid-update','update_title'),0,50);
+	if($update_title==false)
+		$update_title = null;
+	$update_body = wordroid_get_option('wordroid-update','update_body');
+	if($update_body==false)
+		$update_body = null;
+	//App Version
+	$version = wordroid_get_option('wordroid-update','version');
+	$version = (int)$version;
+	//Categories on home screen
+	$category = wordroid_get_option('wordroid-config','home_screen_categories');
+	if($category==false)
+		$category = array();
+	//Force Update
+	$force_update = wordroid_get_option('wordroid-update','force_update');
+	if($force_update == 'on')
+		$force_update = true;
+	//Slider Settings
+	$slider_enabled = wordroid_get_option('wordroid-config','slider_enabled');
+	if($slider_enabled == 'on')
+		$slider_enabled = true;
+	//Sections settings
+	$sections = wordroid_get_option('wordroid-config','wordroid_section_group');
+	if($sections == false)
+		$sections = array();
 	$settings_data = array(
-	    'app_title' => myprefix_get_option('app_name'),
-	    'app_version' => myprefix_get_option('version'),
-	    'force_update' => myprefix_get_option('force_update'),
-	    'toolbar_color' => myprefix_get_option('app_color'),
-	    'sections' => myprefix_get_option('wordroid_section_group'),
-		'categories' => myprefix_get_option('home_screen_categories'),
+	    'app_title' => wordroid_get_option('wordroid-config','app_name'),
+	    'update_title' => $update_title,
+	    'update_body' => $update_body,
+	    'app_version' => $version,
+	    'force_update' => $force_update,
+		'slider_enabled'   => $slider_enabled,
+		'slider_cat'   => wordroid_get_option('wordroid-config','slider_category'),
+	    'sections' => $sections,
+		'categories' => $category,
 	);
 	return $settings_data;
+}
+function wordroid_get_option($prefix,$key = '', $default = false ) {
+		if ( function_exists( 'cmb2_get_option' ) ) {
+			// Use cmb2_get_option as it passes through some key filters.
+			return cmb2_get_option( $prefix, $key, $default );
+		}
+		// Fallback to get_option if CMB2 is not loaded yet.
+		$opts = get_option( $prefix, $default );
+		$val = $default;
+		if ( 'all' == $key ) {
+			$val = $opts;
+		} elseif ( is_array( $opts ) && array_key_exists( $key, $opts ) && false !== $opts[ $key ] ) {
+			$val = $opts[ $key ];
+		}
+		return $val;
 }
 function better_rest_api_featured_images_load_translations() {
     load_plugin_textdomain( 'better-rest-api-featured-images', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
@@ -110,22 +152,6 @@ function better_rest_api_featured_images_init() {
 		}
 	}
 }
-
-function myprefix_get_option( $key = '', $default = false ) {
-		if ( function_exists( 'cmb2_get_option' ) ) {
-			// Use cmb2_get_option as it passes through some key filters.
-			return cmb2_get_option( 'wordroid-config', $key, $default );
-		}
-		// Fallback to get_option if CMB2 is not loaded yet.
-		$opts = get_option( 'wordroid-config', $default );
-		$val = $default;
-		if ( 'all' == $key ) {
-			$val = $opts;
-		} elseif ( is_array( $opts ) && array_key_exists( $key, $opts ) && false !== $opts[ $key ] ) {
-			$val = $opts[ $key ];
-		}
-		return $val;
-}
 function wordroid_rest_api_author($object, $field_name, $request){
 	if(!empty($object['author'])){
 		$author_id = $object['author'];
@@ -184,6 +210,7 @@ function better_rest_api_featured_images_get_field( $object, $field_name, $reque
 	$featured_image['caption']       = $image->post_excerpt;
 	$featured_image['description']   = $image->post_content;
 	$featured_image['source_url']    = wp_get_attachment_url( $image_id );
+	$featured_image['medium_large']  = get_the_post_thumbnail_url($image->post_parent,'medium_large'); 
 	$featured_image['post_thumbnail']= get_the_post_thumbnail_url($image->post_parent,'post-thumbnail'); 
 	return apply_filters( 'better_rest_api_featured_image', $featured_image, $image_id );
 }
