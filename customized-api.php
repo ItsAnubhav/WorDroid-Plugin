@@ -14,6 +14,8 @@ function register_settings_route(){
     'callback' => 'get_settings_data',
   ) );
 }
+
+
 function get_settings_data(){
 	$settings_data = array(
 	    'app_title' => myprefix_get_option('app_name'),
