@@ -152,6 +152,27 @@ function better_rest_api_featured_images_init() {
 		}
 	}
 }
+
+// Add filter to respond with next and previous post in post response.
+add_filter( 'rest_prepare_post', function( $response, $post, $request ) {
+  // Only do this for single post requests.
+        global $post;
+        // Get the so-called next post.
+        $next = get_adjacent_post( false, '', false );
+        // Get the so-called previous post.
+        $previous = get_adjacent_post( false, '', true );
+        // Format them a bit and only send id and slug (or null, if there is no next/previous post).
+        $response->data['next'] = ( is_a( $next, 'WP_Post') ) ? array( "id" => $next->ID, "slug" => $next->post_name ) : null;
+        $response->data['previous'] = ( is_a( $previous, 'WP_Post') ) ? array( "id" => $previous->ID, "slug" => $previous->post_name ) : null;
+    return $response;
+}, 10, 3 );
+
+
+
+function wordroid_prev_post($object, $field_name, $request){
+
+}
+
 function wordroid_rest_api_author($object, $field_name, $request){
 	if(!empty($object['author'])){
 		$author_id = $object['author'];
@@ -203,7 +224,6 @@ function better_rest_api_featured_images_get_field( $object, $field_name, $reque
 	if ( ! $image ) {
 		return null;
 	}
-	$var = myprefix_get_option( '_wordroid_configapp_name' );
 	// This is taken from WP_REST_Attachments_Controller::prepare_item_for_response().
 	$featured_image['id']            = $image_id;
 	$featured_image['alt_text']      = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
