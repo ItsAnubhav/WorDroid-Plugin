@@ -21,7 +21,7 @@
 		echo "<h2>Sending notification</h2>";
 	}
 
-	function post_notification($title,$body,$post_id,$img,$type){
+	function post_notification($title,$body,$value,$img,$type){
 	    $content = array(
 	        "en" => $body
 	        );
@@ -33,7 +33,7 @@
 	        'included_segments' => array('Test'),
 	        'data' => array(
 	        	"type" => $type,
-	        	"value" => $post_id
+	        	"value" => $value
 	        ),
 	        'big_picture' => $img,
 	        'headings' => $headings,
