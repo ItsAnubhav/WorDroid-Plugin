@@ -72,6 +72,11 @@ class Init_Custom_Fields{
 			'priority'     => 'default',
 		) );
 		$cmb->add_field( array(
+			'name' => __( 'User Key', 'settings' ),
+			'id' => 'app_user_key',
+			'type' => 'text',
+		) );
+		$cmb->add_field( array(
 			'name' => __( 'OneSingnal APP ID', 'settings' ),
 			'id' => 'os_app_id',
 			'type' => 'text',
