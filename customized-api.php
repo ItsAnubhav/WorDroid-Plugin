@@ -22,6 +22,10 @@ function get_settings_data(){
 	$update_body = wordroid_get_option('wordroid-update','update_body');
 	if($update_body==false)
 		$update_body = null;
+	//User key
+	$user_key = wordroid_get_option('wordroid-settings','app_user_key');
+	if(!$user_key)
+		$user_key = null;
 	//App Version
 	$version = wordroid_get_option('wordroid-update','version');
 	$version = (int)$version;
@@ -43,7 +47,7 @@ function get_settings_data(){
 		$sections = array();
 	$settings_data = array(
 	    'app_title' => wordroid_get_option('wordroid-config','app_name'),
-	    'user_key' => wordroid_get_option('wordroid-settings','app_user_key'),
+	    'user_key' => $user_key,
 	    'update_title' => $update_title,
 	    'update_body' => $update_body,
 	    'app_version' => $version,
