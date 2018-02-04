@@ -11,6 +11,23 @@ class Init_Custom_Fields{
 		$this->version = $version;
 
 	}
+	
+	function wp_get_option($prefix,$key = '', $default = false ) {
+		if ( function_exists( 'cmb2_get_option' ) ) {
+			// Use cmb2_get_option as it passes through some key filters.
+			return cmb2_get_option( $prefix, $key, $default );
+		}
+		// Fallback to get_option if CMB2 is not loaded yet.
+		$opts = get_option( $prefix, $default );
+		$val = $default;
+		if ( 'all' == $key ) {
+			$val = $opts;
+		} elseif ( is_array( $opts ) && array_key_exists( $key, $opts ) && false !== $opts[ $key ] ) {
+			$val = $opts[ $key ];
+		}
+		return $val;
+	}
+
 
 	public function categories_custom_fields(){
 		// Start with an underscore to hide fields from custom fields list
@@ -75,6 +92,7 @@ class Init_Custom_Fields{
 			'name' => __( 'User Key', 'settings' ),
 			'id' => 'app_user_key',
 			'type' => 'text',
+			'escape_cb' => 'sanitize_greater_than_100',
 		) );
 		$cmb->add_field( array(
 			'name' => __( 'OneSingnal APP ID', 'settings' ),

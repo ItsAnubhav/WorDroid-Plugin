@@ -99,7 +99,7 @@ class Wordroid_Admin {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wordroid-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
-
+	
 	public function wordroid_admin_menu(){
 		add_menu_page(
 			__( 'WorDroid', 'textdomain' ),
