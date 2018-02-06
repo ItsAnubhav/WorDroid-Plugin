@@ -92,7 +92,6 @@ class Init_Custom_Fields{
 			'name' => __( 'User Key', 'settings' ),
 			'id' => 'app_user_key',
 			'type' => 'text',
-			'escape_cb' => 'sanitize_greater_than_100',
 		) );
 		$cmb->add_field( array(
 			'name' => __( 'OneSingnal APP ID', 'settings' ),
