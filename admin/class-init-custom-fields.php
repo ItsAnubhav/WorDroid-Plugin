@@ -74,6 +74,12 @@ class Init_Custom_Fields{
 			'preview_size' => 'medium', // Image size to use when previewing in the admin.
 		) );
 		// Add other metaboxes as needed
+		$cmb->add_field( array(
+			'name' => 'Hide category',
+			'desc' => 'Check this box to hide the category in the WorDroid APP',
+			'id'   => 'hide_category',
+			'type' => 'checkbox',
+		) );
 	}
 
 	public function admin_settings_page(){

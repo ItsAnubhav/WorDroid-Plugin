@@ -3,6 +3,7 @@ add_filter( 'rest_allow_anonymous_comments', '__return_true' );
 add_action( 'plugins_loaded', 'better_rest_api_featured_images_load_translations' );
 add_action( 'init', 'better_rest_api_featured_images_init', 12 );
 add_action( 'rest_api_init','register_settings_route');
+
 /**
  * Load translation files.
  *
@@ -48,8 +49,6 @@ function get_settings_data(){
 		$slider_enabled = true;
 	//Sections settings
 	$sections = wordroid_get_option('wordroid-config','wordroid_section_group');
-	if($sections == false)
-		$sections = array();
 	$settings_data = array(
 	    'app_title' => wordroid_get_option('wordroid-config','app_name'),
 	    'user_key' => $user_key,
@@ -60,11 +59,30 @@ function get_settings_data(){
 	    'force_update' => $force_update,
 		'slider_enabled'   => $slider_enabled,
 		'slider_cat'   => wordroid_get_option('wordroid-config','slider_category'),
-	    'sections' => $sections,
+		'sections' => format_sections($sections),
 		'categories' => $category,
 	);
 	return $settings_data;
 }
+
+function format_sections($sections){
+	if($sections == false)
+		$sections = array();
+	$newarray = array();
+	foreach($sections as $section){
+		$item = array(
+			'title' => $section['title'],
+			'category_id' => (int)$section['category_id'],
+			'type' => (int) $section['type'],
+			'post_count' => (int) $section['post_count'],
+			'image' => $section['image'],
+			'posts' => get_post_by_category((int)$section['category_id'],(int) $section['post_count']),
+		);
+		array_push($newarray,$item);
+	}
+	return $newarray;
+}
+
 function wordroid_get_option($prefix,$key = '', $default = false ) {
 		if ( function_exists( 'cmb2_get_option' ) ) {
 			// Use cmb2_get_option as it passes through some key filters.
@@ -96,6 +114,7 @@ function wordroid_rest_api_comments($object, $field_name, $request){
 	$comments = get_comments($args);
 	return $comments;
 }
+
 function better_rest_api_featured_images_init() {
 	$post_types = get_post_types( array( 'public' => true ), 'objects' );
 	register_rest_field( 'comment',
@@ -168,13 +187,7 @@ function better_rest_api_featured_images_init() {
 add_filter( 'rest_prepare_post', function( $response, $post, $request ) {
   // Only do this for single post requests.
         global $post;
-        // Get the so-called next post.
-        $next = get_adjacent_post( false, '', false );
-        // Get the so-called previous post.
-        $previous = get_adjacent_post( false, '', true );
-        // Format them a bit and only send id and slug (or null, if there is no next/previous post).
-        $response->data['next'] = ( is_a( $next, 'WP_Post') ) ? array( "id" => $next->ID, "slug" => $next->post_name ) : null;
-        $response->data['previous'] = ( is_a( $previous, 'WP_Post') ) ? array( "id" => $previous->ID, "slug" => $previous->post_name ) : null;
+        $response->data['comment_count'] = (int)get_comments_number( $post->ID);
     return $response;
 }, 10, 3 );
 
@@ -193,6 +206,9 @@ function wordroid_rest_api_author($object, $field_name, $request){
 	$author_name = get_the_author_meta( 'display_name' , $author_id );
 	return apply_filters( 'wordroid_author', $author_name, $author_id );
 }
+
+
+
 
 function wordroid_rest_api_categories($object, $field_name, $request){
 	if(!empty($object['categories'])){
@@ -245,3 +261,27 @@ function better_rest_api_featured_images_get_field( $object, $field_name, $reque
 	$featured_image['post_thumbnail']= get_the_post_thumbnail_url($image->post_parent,'post-thumbnail'); 
 	return apply_filters( 'better_rest_api_featured_image', $featured_image, $image_id );
 }
+
+/*function get_post_by_category($category){
+    $posts = array();
+    $args = array(
+        'posts_per_page'   => 10,
+        'cat'              => $category,
+        'orderby'          => 'post_date',
+        'post_type'        => 'post',
+        'post_status'      => array('publish', 'draft', 'pending' ),
+        'author'           => 1,
+    ); 
+    
+    $the_query = new WP_Query($args);
+    while ( $the_query->have_posts() ) : $the_query->the_post();
+        $post = array();
+        $post['title'] = get_the_title();
+        $post['img'] = get_the_post_thumbnail_url();
+		$post['id'] = get_the_ID();
+        array_push($posts,$post);
+    endwhile;
+    wp_reset_postdata();
+
+    return $posts;
+}*/

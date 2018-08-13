@@ -59,6 +59,7 @@ register_deactivation_hook( __FILE__, 'deactivate_wordroid' );
 require_once __DIR__ . '/cmb2/init.php';
 require_once __DIR__ . '/admin/class-send-notification.php';
 require plugin_dir_path( __FILE__ ) . '/customized-api.php';
+require plugin_dir_path( __FILE__ ) . '/new_api.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-wordroid.php';
 add_action( 'transition_post_status', 'post_transition_action', 10, 3 );
 /**

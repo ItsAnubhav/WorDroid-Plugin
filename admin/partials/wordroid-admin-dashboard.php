@@ -109,7 +109,7 @@
 					<td><input style="width:300px;" type="text" name="msg_title" value="<?php echo $msg_title; ?>"></td>
 				</tr>
 				<tr>
-					<td style="width:250px;" align="left"><b>Message Body</b></td>
+					<td style="width:250px;" align="left"><b>Message Body (Supports HTML Tags)</b></td>
 					<td><textarea style="width:300px;" id="msg_content" name="msg_content" type="text" rows="4"><?php echo $msg_content; ?></textarea><br></td>
 				</tr>
 			</table>
