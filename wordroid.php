@@ -3,7 +3,7 @@
 /**
  *
  * @link              http://itsanubhav.com
- * @since             1.0.0
+ * @since             1.0.1
  * @package           Wordroid
  *
  * @wordpress-plugin
