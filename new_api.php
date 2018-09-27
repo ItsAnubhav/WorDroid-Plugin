@@ -134,7 +134,7 @@ function get_post_by_category($category,$count){
         'cat'              => $category,
         'orderby'          => 'post_date',
         'post_type'        => 'post',
-        'post_status'      => array('publish', 'draft', 'pending' ),
+        'post_status'      => array('publish'),
         'author'           => 1,
     ); 
     
