@@ -135,7 +135,6 @@ function get_post_by_category($category,$count){
         'orderby'          => 'post_date',
         'post_type'        => 'post',
         'post_status'      => array('publish'),
-        'author'           => 1,
     ); 
     
     $the_query = new WP_Query($args);
