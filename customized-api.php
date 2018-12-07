@@ -75,7 +75,7 @@ function format_sections($sections){
 			'category_id' => (int)$section['category_id'],
 			'type' => (int) $section['type'],
 			'post_count' => (int) $section['post_count'],
-			'image' => $section['image'],
+			'image' => ($section['image']!=null||$section['image']!=false) ? $section['image'] : null,
 			'posts' => get_post_by_category((int)$section['category_id'],(int) $section['post_count']),
 		);
 		array_push($newarray,$item);

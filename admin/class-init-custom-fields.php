@@ -254,11 +254,9 @@ class Init_Custom_Fields{
 		'show_option_none' => true,
 		'default'          => '1',
 		'options'          => array(
-			'1' => __( '1', 'cmb2' ),
-			'2' => __( '2', 'cmb2' ),
-			'3' => __( '3', 'cmb2' ),
-			'4' => __( '4', 'cmb2' ),
-			'5' => __( '5', 'cmb2' ),
+			'1' => __( 'Slider', 'cmb2' ),
+			'2' => __( 'Vertical List', 'cmb2' ),
+			'3' => __( 'Horizontal List', 'cmb2' ),
 		),
 	) );
 	$cmb->add_group_field($group_field_id, array(
