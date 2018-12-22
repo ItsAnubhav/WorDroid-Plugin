@@ -75,30 +75,8 @@
 	}
 
 	function wordroidsendMessage($fields_array){
-		$apikey = wp_get_option('wordroid-settings','os_api_key');
-		/*$appid = "82fa91c3-9c88-4c3f-9fc5-dc88a0149038";
-		$apikey = "NGM3NTM1NTktYWQ3OS00OWUyLTkxMjktMjk1NGY2ZWU4N2Jk";
-	    $content = array(
-	        "en" => $content
-	        );
-	    $headings = array(
-	        "en" => $title
-	    );
-
-	    $fields = array(
-	        'app_id' => $appid,
-	        'included_segments' => array('All'),
-	        'data' => array(
-	        	"post_id" => $postid
-	        ),
-	        'big_picture' => $image,
-	        'headings' => $headings,
-	        'contents' => $content
-	    );*/
-
+	    $apikey = wp_get_option('wordroid-settings','os_api_key');
 	    $fields = json_encode($fields_array);
-		//print("\nJSON sent:\n");
-		//print($fields);
 
 	    $ch = curl_init();
 	    curl_setopt($ch, CURLOPT_URL, "https://onesignal.com/api/v1/notifications");
