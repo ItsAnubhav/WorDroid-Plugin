@@ -50,7 +50,7 @@
 		 	if($notify=='on'){
 			 	$type = "post";
 				$title =  wp_get_option('wordroid-settings','update_notify_title');
-				$post_title = get_the_title($post);
+				$post_title = html_entity_decode(get_the_title($post));
 				$post_id 	= get_the_ID($post);
 				$thumbnail = get_the_post_thumbnail_url($post,'full');
 				$response =  post_notification($title,$post_title,$post_id,$thumbnail,'post');
