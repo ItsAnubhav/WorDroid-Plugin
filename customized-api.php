@@ -3,12 +3,22 @@ add_filter( 'rest_allow_anonymous_comments', '__return_true' );
 add_action( 'plugins_loaded', 'better_rest_api_featured_images_load_translations' );
 add_action( 'init', 'better_rest_api_featured_images_init', 12 );
 add_action( 'rest_api_init','register_settings_route');
+add_filter('rest_prepare_category', 'wordroid3_filter_category', 10, 3);
 
 /**
  * Load translation files.
  *
  * @since  1.2.0
  */
+
+function wordroid3_filter_category($response, $item, $request){
+	/*if ($response->data['cmb2']['wordroid_fields']['hide_category']!='on') {
+    	return $response;
+    }else{
+		return ;
+	}*/
+	return $response;
+}
 function register_settings_route(){
 	register_rest_route( 'wordroid/v2', '/settings', array(
     'methods' => 'GET',
@@ -161,12 +171,20 @@ function better_rest_api_featured_images_init() {
 						'schema'       => null,
 					)
 				);
+	
 		if ( $show_in_rest && $supports_author ) {
 			if ( function_exists( 'register_rest_field' ) ) {
 				register_rest_field( $post_type_name,
 							'author_name',
 							array(
 								'get_callback' => 'wordroid_rest_api_author',
+								'schema'       => null,
+							)
+				);
+				register_rest_field( $post_type_name,
+							'author_img',
+							array(
+								'get_callback' => 'wordroid_rest_api_author_img',
 								'schema'       => null,
 							)
 				);
@@ -178,10 +196,20 @@ function better_rest_api_featured_images_init() {
 								'schema'       => null,
 							)
 				);
+				register_api_field( $post_type_name,
+							'authorkjkjh_name',
+							array(
+								'get_callback' => 'wordroid_rest_api_author',
+								'schema'       => null,
+							)
+				);
+				
 			}
 		}
 	}
 }
+
+
 
 // Add filter to respond with next and previous post in post response.
 add_filter( 'rest_prepare_post', function( $response, $post, $request ) {
@@ -191,10 +219,43 @@ add_filter( 'rest_prepare_post', function( $response, $post, $request ) {
     return $response;
 }, 10, 3 );
 
+// Add filter to respond with next and previous post in post response.
+add_filter( 'rest_prepare_post', function( $response, $post, $request ) {
+  // Only do this for single post requests.
+        global $post;
+        $response->data['views'] = get_post_meta($post->ID, "wordroid_post_views_count", true);
+    return $response;
+}, 10, 3 );
+
+//add_action('rest_api_init', 'register_rest_images' );
+
+function register_rest_views(){
+    register_rest_field( array('post'),
+        'views',
+        array(
+            'get_callback'    => 'get_rest_views',
+            'update_callback' => null,
+            'schema'          => null,
+        )
+    );
+}
+
+function get_rest_views( $object, $field_name, $request ) {
+    if( $object['id'] ){
+        $img = get_post_meta($object['id'], "wordroid_post_views_count", true);
+        return $img;
+    }
+    return false;
+}
 
 
 function wordroid_prev_post($object, $field_name, $request){
 
+}
+
+function get_post_views($object, $field_name, $request){
+	$post_id = $object['id'];
+	return (int)get_post_meta($postID, "wordroid_post_views_count", true);
 }
 
 function wordroid_rest_api_author($object, $field_name, $request){
@@ -207,10 +268,36 @@ function wordroid_rest_api_author($object, $field_name, $request){
 	return apply_filters( 'wordroid_author', $author_name, $author_id );
 }
 
+function wordroid_rest_api_author_img($object, $field_name, $request){
+	if(!empty($object['author'])){
+		$author_id = $object['author'];
+	}else{
+		return null;
+	}
+	$author_name = get_avatar_url( $author_id );
+	return apply_filters( 'wordroid_author', $author_name, $author_id );
+}
 
 
 
 function wordroid_rest_api_categories($object, $field_name, $request){
+	
+	if($request['context']=='embed'){
+		$categories = get_the_category($object['id']);
+		$category_obj = [];
+		foreach($categories as $cat) {
+			$array = [];
+			$array['id'] = $cat->term_id;
+			$array['name'] = $cat->name;
+			$array['description'] = $cat->description;
+			$array['slug'] = $cat->slug;
+			$array['count'] = $cat->count;
+			$array['parent'] = $cat->parent;
+			array_push($category_obj,$array);
+		}
+		return apply_filters( 'wordroid_categories', $category_obj, $image_id );
+	}
+	
 	if(!empty($object['categories'])){
 		$categories = $object['categories'];
 	}else{
@@ -261,27 +348,3 @@ function better_rest_api_featured_images_get_field( $object, $field_name, $reque
 	$featured_image['post_thumbnail']= get_the_post_thumbnail_url($image->post_parent,'post-thumbnail'); 
 	return apply_filters( 'better_rest_api_featured_image', $featured_image, $image_id );
 }
-
-/*function get_post_by_category($category){
-    $posts = array();
-    $args = array(
-        'posts_per_page'   => 10,
-        'cat'              => $category,
-        'orderby'          => 'post_date',
-        'post_type'        => 'post',
-        'post_status'      => array('publish', 'draft', 'pending' ),
-        'author'           => 1,
-    ); 
-    
-    $the_query = new WP_Query($args);
-    while ( $the_query->have_posts() ) : $the_query->the_post();
-        $post = array();
-        $post['title'] = get_the_title();
-        $post['img'] = get_the_post_thumbnail_url();
-		$post['id'] = get_the_ID();
-        array_push($posts,$post);
-    endwhile;
-    wp_reset_postdata();
-
-    return $posts;
-}*/
