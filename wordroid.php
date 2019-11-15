@@ -10,7 +10,7 @@
  * Plugin Name:       WorDroid
  * Plugin URI:        http://itsanubhav.com
  * Description:       This plugins provides the features to your WorDroid Android app.
- * Version:           1.0.0
+ * Version:           1.1.0
  * Author:            Anubhav Anand
  * Author URI:        https://codecanyon.net/item/wordroid-full-wordpress-blog-app/19753667
  * License:           GPL-2.0+
